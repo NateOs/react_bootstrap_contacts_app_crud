@@ -6,11 +6,15 @@ import ListItem from "./components/ListItem";
 import Add from "./components/Add";
 import axios from "axios";
 
+import { useSelector, useDispatch } from "react-redux";
+import { setNormalisedData, setProductsData } from "./redux/productsSlice";
+
 function App() {
+  const products = useSelector((state) => state.products);
+  const dispatch = useDispatch();
+
   const url = "http://www.mocky.io/v2/5c3e15e63500006e003e9795";
 
-  const [data, setData] = useState([]);
-  const [normdata, setNormdata] = useState([]);
   // Fetch DATA
   useEffect(() => {
     axios
@@ -18,7 +22,7 @@ function App() {
       .then(function (response) {
         // handle success
         console.log(response.data);
-        setData(response.data);
+        dispatch(setProductsData(response.data));
       })
       .catch(function (error) {
         // handle error
@@ -30,7 +34,7 @@ function App() {
     <div>
       <Row>
         <Col>
-          <h1 className="jumbotron text-center mt-5 border border-primary rounded p-1">
+          <h1 className=" text-center mt-5 border rounded p-1">
             Item Price Manager
           </h1>
         </Col>
