@@ -1,17 +1,24 @@
+// packages
 import "./App.css";
-import { useEffect, useState } from "react";
-import "./styles/bootstrap5.min.css";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import ListItem from "./components/ListItem";
-import Add from "./components/Add";
 import axios from "axios";
+import "./styles/bootstrap5.min.css";
 
+//other imports
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setNormalisedData, setProductsData } from "./redux/productsSlice";
+import { normalize, schema } from "normalizr";
+
+// Components
+import ListItem from "./components/ListItem";
+import Add from "./components/Add";
+import { Row, Col } from "react-bootstrap";
 
 function App() {
   const products = useSelector((state) => state.products);
   const dispatch = useDispatch();
+
+  const [rdata, setrData] = useState([]);
 
   const url = "http://www.mocky.io/v2/5c3e15e63500006e003e9795";
 
@@ -21,8 +28,18 @@ function App() {
       .get(url)
       .then(function (response) {
         // handle success
-        console.log(response.data);
+        setrData(response.data);
+        console.log(rdata);
         dispatch(setProductsData(response.data));
+
+        // Normalising
+        const price = new schema.Entity("prices", {});
+        const product = new schema.Entity("products", {
+          prices: [price],
+        });
+        const normalizedData = normalize(rdata, { products: [product] });
+        dispatch(setNormalisedData(normalizedData.entities));
+        console.log(normalizedData);
       })
       .catch(function (error) {
         // handle error
