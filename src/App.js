@@ -3,7 +3,7 @@ import "./App.css";
 import axios from "axios";
 import "./styles/bootstrap5.min.css";
 
-//other imports
+// other imports
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setNormalisedData, setProductsData } from "./redux/productsSlice";
@@ -17,7 +17,7 @@ import { Row, Col } from "react-bootstrap";
 function App() {
   const normState = useSelector((state) => state.products.normalisedState);
   const dispatch = useDispatch();
-  console.log(normState);
+  // console.log(normState);
 
   const [rdata, setrData] = useState([]);
 
@@ -50,8 +50,8 @@ function App() {
       });
   }, []);
 
-  console.log("products", normState.products);
-  console.log("prices", normState.prices);
+  // console.log("products", normState.products);
+  // console.log("prices", normState.prices);
 
   // Creating iterables from state
   const stateProducts = [];
@@ -62,8 +62,9 @@ function App() {
     Object.values(normState.prices).forEach((val) => statePrices.push(val));
   }
 
-  console.log("statePrices", statePrices);
-  const { name, id } = stateProducts;
+  // console.log("statePrices", statePrices);
+
+  // console.log(name, id);
   return (
     <div>
       <Row>
@@ -76,7 +77,7 @@ function App() {
       <Row>
         <Col className="mx-auto" md={8}>
           {stateProducts.map((item) => {
-            return <ListItem key={item.id} item={item} />;
+            return <ListItem key={item.id} item={item} prices={statePrices} />;
           })}
           <Add></Add>
         </Col>

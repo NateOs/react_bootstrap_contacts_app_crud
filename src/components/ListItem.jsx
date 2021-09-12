@@ -1,21 +1,26 @@
 import React from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
-export default function ListItem({ item }) {
-  const {name, id} = item;
+export default function ListItem({ item, prices }) {
+  const { name, id } = item;
+  console.log(id);
+
   return (
     <Row
       className="border border-secondary rounded p-2 text-center"
       onClick={() => {
         console.log("this is a list item");
       }}>
-      <Col xs={6}>
+      <Col xs={10}>
         <h5>{name}</h5>
-        <span className="mx-3">Price 1</span>
-        <span className="mx-3">Price 2</span>
-        <span className="mx-3">Price 3</span>
+        {prices.map((price) => {
+          if (price.id === id)
+            return <span className="mx-3">{price.price}</span>;
+        })}
+        {/* <span className="mx-3">Price 2</span>
+        <span className="mx-3">Price 3</span> */}
       </Col>
-      <Col xs={6}>
+      <Col xs={2}>
         <Button className="btn btn-danger">Delete</Button>
       </Col>
     </Row>
