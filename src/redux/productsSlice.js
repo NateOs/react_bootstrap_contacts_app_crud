@@ -14,6 +14,12 @@ export const productsSlice = createSlice({
     setProductsData: (state, action) => {
       state.products = action.payload;
     },
+    setText: (state, action) => {
+      state.products = action.payload;
+    },
+    saveItem: (state, action) => {
+      Object.assign(state.normalisedState.products, action.payload);
+    },
     deleteItem: (state, action) => {
       if (state.normalisedState.products.id === action.payload) {
         Object.assign(state.normalisedState.products, {
@@ -24,6 +30,11 @@ export const productsSlice = createSlice({
   },
 });
 
-export const { setNormalisedData, setProductsData, deleteItem } =
-  productsSlice.actions;
+export const {
+  setNormalisedData,
+  setProductsData,
+  deleteItem,
+  setText,
+  saveItem,
+} = productsSlice.actions;
 export default productsSlice.reducer;

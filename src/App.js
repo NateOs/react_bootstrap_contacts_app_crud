@@ -10,13 +10,15 @@ import {
   setNormalisedData,
   setProductsData,
   deleteItem,
+  setText,
+  saveItem,
 } from "./redux/productsSlice";
 import { normalize, schema } from "normalizr";
 
 // Components
 import ListItem from "./components/ListItem";
 import Add from "./components/Add";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Form } from "react-bootstrap";
 
 function App() {
   const normState = useSelector((state) => state.products.normalisedState);
@@ -92,7 +94,21 @@ function App() {
               <p>Error loading page, check network or API</p>
             );
           })}
-          <Add></Add>
+          <Form>
+            <Form.Group>
+              <Form.Label>Enter drugs</Form.Label>
+              <Form.Control
+                onChange={dispatch(
+                  setText({ name: (e) => e.target.value })
+                )}></Form.Control>
+              <Form.Label>Enter price</Form.Label>
+              <Form.Control
+                onChange={dispatch(
+                  setText({ price: (e) => e.target.value })
+                )}></Form.Control>
+            </Form.Group>
+          </Form>
+          <Add onClick={dispatch(saveItem)}></Add>
         </Col>
       </Row>
     </div>
