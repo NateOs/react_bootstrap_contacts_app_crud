@@ -6,7 +6,11 @@ import "./styles/bootstrap5.min.css";
 // other imports
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setNormalisedData, setProductsData } from "./redux/productsSlice";
+import {
+  setNormalisedData,
+  setProductsData,
+  deleteItem,
+} from "./redux/productsSlice";
 import { normalize, schema } from "normalizr";
 
 // Components
@@ -48,7 +52,7 @@ function App() {
         // handle error
         console.log(error);
       });
-  }, []);
+  }, [rdata]);
 
   // console.log("products", normState.products);
   // console.log("prices", normState.prices);
@@ -77,7 +81,16 @@ function App() {
       <Row>
         <Col className="mx-auto" md={8}>
           {stateProducts.map((item) => {
-            return <ListItem key={item.id} item={item} prices={statePrices} />;
+            return rdata.length !== 0 ? (
+              <ListItem
+                key={item.id}
+                item={item}
+                prices={statePrices}
+                deleteItem={deleteItem}
+              />
+            ) : (
+              <p>Error loading page, check network or API</p>
+            );
           })}
           <Add></Add>
         </Col>
