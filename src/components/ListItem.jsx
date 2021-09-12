@@ -1,7 +1,8 @@
 import React from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
-export default function ListItem() {
+export default function ListItem({ item }) {
+  const {name, id} = item;
   return (
     <Row
       className="border border-secondary rounded p-2 text-center"
@@ -9,7 +10,7 @@ export default function ListItem() {
         console.log("this is a list item");
       }}>
       <Col xs={6}>
-        <h5>List Item 1</h5>
+        <h5>{name}</h5>
         <span className="mx-3">Price 1</span>
         <span className="mx-3">Price 2</span>
         <span className="mx-3">Price 3</span>
