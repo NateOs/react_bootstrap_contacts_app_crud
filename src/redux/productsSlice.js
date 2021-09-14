@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   products: [],
   normalisedState: {},
+  prices: {},
+  nProducts: {},
 };
 
 export const productsSlice = createSlice({
@@ -18,14 +20,24 @@ export const productsSlice = createSlice({
       state.products = action.payload;
     },
     saveItem: (state, action) => {
-      Object.assign(state.normalisedState.products, action.payload);
+      const newProduct = {
+        id: action.payload.id,
+        name: action.payload.name,
+        // prices: action.payload.price,
+      };
+
+      Object.assign(state.nProducts, newProduct);
     },
+
     deleteItem: (state, action) => {
-      if (state.normalisedState.products.id === action.payload) {
-        Object.assign(state.normalisedState.products, {
-          name: "",
-        });
-      }
+      console.log("deleteItem");
+    },
+    addNewItem: (state, action) => {},
+    setPrices: (state, action) => {
+      state.prices = action.payload;
+    },
+    setProducts: (state, action) => {
+      state.nProducts = action.payload;
     },
   },
 });
@@ -35,6 +47,8 @@ export const {
   setProductsData,
   deleteItem,
   setText,
+  setPrices,
+  setProducts,
   saveItem,
 } = productsSlice.actions;
 export default productsSlice.reducer;

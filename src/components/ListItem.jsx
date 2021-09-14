@@ -16,7 +16,7 @@ export default function ListItem({ item, prices }) {
         <h5>{name}</h5>
         {prices.map((price) => {
           if (price.id === id)
-            return <span className="mx-3">{price.price}</span>;
+            return <span key={price.id} className="mx-3">{price.price}</span>;
         })}
         {/* <span className="mx-3">Price 2</span>
         <span className="mx-3">Price 3</span> */}

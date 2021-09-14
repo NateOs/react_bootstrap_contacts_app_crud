@@ -2,18 +2,20 @@
 import "./App.css";
 import axios from "axios";
 import "./styles/bootstrap5.min.css";
+import ObjectID from "bson-objectid";
 
 // other imports
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { normalize, schema } from "normalizr";
 import {
   setNormalisedData,
   setProductsData,
   deleteItem,
-  setText,
   saveItem,
+  setPrices,
+  setProducts,
 } from "./redux/productsSlice";
-import { normalize, schema } from "normalizr";
 
 // Components
 import ListItem from "./components/ListItem";
@@ -25,7 +27,10 @@ function App() {
   const dispatch = useDispatch();
   // console.log(normState);
 
-  const [rdata, setrData] = useState([]);
+  const [rdata, setrData] = useState(null);
+
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState(0.0);
 
   // Fetch DATA
   useEffect(() => {
@@ -49,12 +54,23 @@ function App() {
         });
         // Set
         dispatch(setNormalisedData(normalizedData.entities));
+        dispatch(setProducts(normalizedData.entities.products));
+        dispatch(setPrices(normalizedData.entities.prices));
       })
       .catch(function (error) {
         // handle error
         console.log(error);
       });
-  }, [rdata]);
+  }, []);
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (name && price) {
+  //     const item = { name: name, price: price };
+  //   } else {
+  //     alert("Invalid input");
+  //   }
+  // };
 
   // console.log("products", normState.products);
   // console.log("prices", normState.prices);
@@ -68,9 +84,6 @@ function App() {
     Object.values(normState.prices).forEach((val) => statePrices.push(val));
   }
 
-  // console.log("statePrices", statePrices);
-
-  // console.log(name, id);
   return (
     <div>
       <Row>
@@ -82,33 +95,43 @@ function App() {
       </Row>
       <Row>
         <Col className="mx-auto" md={8}>
-          {stateProducts.map((item) => {
-            return rdata.length !== 0 ? (
-              <ListItem
-                key={item.id}
-                item={item}
-                prices={statePrices}
-                deleteItem={deleteItem}
-              />
-            ) : (
-              <p>Error loading page, check network or API</p>
-            );
-          })}
+          {rdata ? (
+            stateProducts.map((item) => {
+              return (
+                <ListItem
+                  key={item.id}
+                  item={item}
+                  prices={statePrices}
+                  deleteItem={deleteItem}
+                />
+              );
+            })
+          ) : (
+            <p>Check internet conn</p>
+          )}
+
           <Form>
             <Form.Group>
               <Form.Label>Enter drugs</Form.Label>
               <Form.Control
-                onChange={dispatch(
-                  setText({ name: (e) => e.target.value })
-                )}></Form.Control>
+                name="name"
+                onChange={(e) => setName(e.target.value)}
+                value={name}></Form.Control>
               <Form.Label>Enter price</Form.Label>
               <Form.Control
-                onChange={dispatch(
-                  setText({ price: (e) => e.target.value })
-                )}></Form.Control>
+                name="price"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}></Form.Control>
             </Form.Group>
           </Form>
-          <Add onClick={dispatch(saveItem)}></Add>
+          <Add
+            onClick={dispatch(
+              saveItem({
+                id: ObjectID().toHexString(),
+                name: { name },
+                price: { price },
+              })
+            )}></Add>
         </Col>
       </Row>
     </div>
