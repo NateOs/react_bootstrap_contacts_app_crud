@@ -19,39 +19,31 @@ import {
 import ListItem from "./components/ListItem";
 import Add from "./components/Add";
 import { Row, Col, Form } from "react-bootstrap";
-
 function App() {
-  const state = useSelector((state) => state.products);
+  const products = useSelector((state) => state.products.products);
   const dispatch = useDispatch();
 
-  const [rdata, setrData] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0.0);
-
   // Fetch DATA
   useEffect(() => {
     const url = "http://www.mocky.io/v2/5c3e15e63500006e003e9795";
-
+    setIsLoading(true);
     axios
       .get(url)
       .then(function (response) {
         // handle success
-        setrData(response.data);
-        // console.log("rdata", rdata);
         dispatch(setProductsData(response.data));
+        setIsLoading(false);
+        setError(false);
       })
       .catch(function (error) {
         // handle error
-        console.log(error);
+        setError(true);
       });
   }, []);
-
-  // Creating iterables from state
-  const stateProducts = [];
-  const statePrices = [];
-
-  setTimeout(() => {});
 
   return (
     <div>
@@ -64,21 +56,20 @@ function App() {
       </Row>
       <Row>
         <Col className="mx-auto" md={8}>
-          {rdata ? (
-            stateProducts.map((item) => {
+          {!isLoading ? (
+            products.map((item, index) => {
+              const { name, id, prices } = item;
               return (
                 <ListItem
-                  key={item.id}
-                  item={item}
-                  prices={statePrices}
-                  deleteItem={deleteItem}
-                />
+                  key={id}
+                  name={name}
+                  prices={prices}
+                  id={id}></ListItem>
               );
             })
           ) : (
-            <p>Check internet conn</p>
+            <p>Error encountered, check internet</p>
           )}
-
           <Form>
             <Form.Group>
               <Form.Label>Enter drugs</Form.Label>
@@ -88,19 +79,22 @@ function App() {
                 value={name}></Form.Control>
               <Form.Label>Enter price</Form.Label>
               <Form.Control
+                type="number"
                 name="price"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}></Form.Control>
             </Form.Group>
           </Form>
           <Add
-            onClick={dispatch(
-              saveItem({
-                id: state?.products.length + 1,
-                name: name,
-                price: price,
-              })
-            )}></Add>
+          // onClick={dispatch(
+          //   saveItem({
+          //     id: products.length + 1,
+          //     name: name,
+          //     price: price,
+          //     date: new Date()
+          //   })
+          // )}
+          ></Add>
         </Col>
       </Row>
     </div>

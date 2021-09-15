@@ -2,10 +2,13 @@ import React from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { deleteItem } from "../redux/productsSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { saveItem } from "../redux/productsSlice";
 
-export default function ListItem({ item, prices }) {
-  const { name, id } = item;
+export default function ListItem({ name, id, prices }) {
   const dispatch = useDispatch();
+  console.log(prices);
+  const recentPrice = prices[prices.length - 1];
+  console.log(recentPrice);
   return (
     <Row
       className="border border-secondary rounded p-2 text-center"
@@ -14,19 +17,15 @@ export default function ListItem({ item, prices }) {
       }}>
       <Col xs={10}>
         <h5>{name}</h5>
-        {prices.map((price) => {
-          if (price.id === id)
-            return <span key={price.id} className="mx-3">{price.price}</span>;
-        })}
-        {/* <span className="mx-3">Price 2</span>
-        <span className="mx-3">Price 3</span> */}
+        {}
+        <span className="mx-3">{recentPrice.price}</span>
       </Col>
       <Col xs={2}>
         <Button
           className="btn btn-danger"
           onClick={() => {
-            // console.log(item.id);
             dispatch(deleteItem(id));
+            dispatch(saveItem());
           }}>
           Delete
         </Button>

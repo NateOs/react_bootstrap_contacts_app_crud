@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import merge from "lodash/merge";
 
 const initialState = {
   products: [],
@@ -10,15 +9,22 @@ export const productsSlice = createSlice({
   initialState,
   reducers: {
     setProductsData: (state, action) => {
-      state.products = action.payload;
+      state.products = action.payload.products;
     },
     setText: (state, action) => {
       state.products = action.payload;
     },
-    saveItem: (state, action) => {},
+    saveItem: (state, action) => {
+      
+      localStorage.setItem("productsState", JSON.stringify(state.products));
+    },
 
     deleteItem: (state, action) => {
       console.log("deleteItem", action.payload);
+      let id = action.payload;
+      const itemIndex = state.products.map((item) => item.id).indexOf(id);
+      console.log(itemIndex);
+      state.products.splice(itemIndex, 1);
     },
     addNewItem: (state, action) => {},
     setPrices: (state, action) => {
