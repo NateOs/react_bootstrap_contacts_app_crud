@@ -2,12 +2,10 @@
 import "./App.css";
 import axios from "axios";
 import "./styles/bootstrap5.min.css";
-import ObjectID from "bson-objectid";
 
 // other imports
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { normalize, schema } from "normalizr";
 import {
   setNormalisedData,
   setProductsData,
@@ -23,9 +21,8 @@ import Add from "./components/Add";
 import { Row, Col, Form } from "react-bootstrap";
 
 function App() {
-  const normState = useSelector((state) => state.products.normalisedState);
+  const state = useSelector((state) => state.products);
   const dispatch = useDispatch();
-  // console.log(normState);
 
   const [rdata, setrData] = useState(null);
 
@@ -43,19 +40,6 @@ function App() {
         setrData(response.data);
         // console.log("rdata", rdata);
         dispatch(setProductsData(response.data));
-
-        // Normalising
-        const price = new schema.Entity("prices", {});
-        const product = new schema.Entity("products", {
-          prices: [price],
-        });
-        const normalizedData = normalize(response.data, {
-          products: [product],
-        });
-        // Set
-        dispatch(setNormalisedData(normalizedData.entities));
-        dispatch(setProducts(normalizedData.entities.products));
-        dispatch(setPrices(normalizedData.entities.prices));
       })
       .catch(function (error) {
         // handle error
@@ -63,26 +47,11 @@ function App() {
       });
   }, []);
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (name && price) {
-  //     const item = { name: name, price: price };
-  //   } else {
-  //     alert("Invalid input");
-  //   }
-  // };
-
-  // console.log("products", normState.products);
-  // console.log("prices", normState.prices);
-
   // Creating iterables from state
   const stateProducts = [];
   const statePrices = [];
 
-  if (normState.products && normState.prices) {
-    Object.values(normState.products).forEach((val) => stateProducts.push(val));
-    Object.values(normState.prices).forEach((val) => statePrices.push(val));
-  }
+  setTimeout(() => {});
 
   return (
     <div>
@@ -127,9 +96,9 @@ function App() {
           <Add
             onClick={dispatch(
               saveItem({
-                id: ObjectID().toHexString(),
-                name: { name },
-                price: { price },
+                id: state?.products.length + 1,
+                name: name,
+                price: price,
               })
             )}></Add>
         </Col>
