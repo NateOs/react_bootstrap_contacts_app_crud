@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   setNormalisedData,
   setProductsData,
+  setState,
   deleteItem,
   saveItem,
   setPrices,
@@ -27,22 +28,34 @@ function App() {
   const [error, setError] = useState(false);
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0.0);
+
   // Fetch DATA
   useEffect(() => {
     const url = "http://www.mocky.io/v2/5c3e15e63500006e003e9795";
-    setIsLoading(true);
-    axios
-      .get(url)
-      .then(function (response) {
-        // handle success
-        dispatch(setProductsData(response.data));
-        setIsLoading(false);
-        setError(false);
-      })
-      .catch(function (error) {
-        // handle error
-        setError(true);
-      });
+
+    const dataInStorage =
+      JSON.parse(localStorage.getItem("productsState")) || [];
+
+    if (dataInStorage.length > 0) {
+      setError(false);
+      setIsLoading(false);
+      dispatch(setState(dataInStorage));
+    }
+
+    if (dataInStorage.length < 1) {
+      axios
+        .get(url)
+        .then(function (response) {
+          // handle success
+          dispatch(setProductsData(response.data));
+          setIsLoading(false);
+          setError(false);
+        })
+        .catch(function (error) {
+          // handle error
+          setError(true);
+        });
+    }
   }, []);
 
   return (

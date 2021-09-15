@@ -11,7 +11,7 @@ export const productsSlice = createSlice({
     setProductsData: (state, action) => {
       state.products = action.payload.products;
     },
-    setText: (state, action) => {
+    setState: (state, action) => {
       state.products = action.payload;
     },
     saveItem: (state, action) => {
@@ -38,7 +38,7 @@ export const {
   setNormalisedData,
   setProductsData,
   deleteItem,
-  setText,
+  setState,
   setPrices,
   setProducts,
   saveItem,
