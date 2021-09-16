@@ -7,7 +7,3 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 Clone or download repository
 Run 'npm install'
 Then run 'npm run start'
-
-## Project isnt fully complete...
-
-Contains bugs... not yet resolved
