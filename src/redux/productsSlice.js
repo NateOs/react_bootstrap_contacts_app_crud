@@ -15,7 +15,6 @@ export const productsSlice = createSlice({
       state.products = action.payload;
     },
     saveItem: (state, action) => {
-      
       localStorage.setItem("productsState", JSON.stringify(state.products));
     },
 
@@ -26,7 +25,21 @@ export const productsSlice = createSlice({
       console.log(itemIndex);
       state.products.splice(itemIndex, 1);
     },
-    addNewItem: (state, action) => {},
+    addNewItem: (state, action) => {
+      let newItem = {
+        id: action.payload.id,
+        name: action.payload.name,
+        prices: [
+          {
+            id: 1,
+            price: action.payload.prices,
+            date: new Date().toISOString(),
+          },
+        ],
+      };
+      state.products.push(newItem);
+      localStorage.setItem("productsState", JSON.stringify(state.products));
+    },
     setPrices: (state, action) => {
       state.prices = action.payload;
     },
@@ -35,6 +48,7 @@ export const productsSlice = createSlice({
 });
 
 export const {
+  addNewItem,
   setNormalisedData,
   setProductsData,
   deleteItem,

@@ -6,15 +6,11 @@ import { saveItem } from "../redux/productsSlice";
 
 export default function ListItem({ name, id, prices }) {
   const dispatch = useDispatch();
-  console.log(prices);
   const recentPrice = prices[prices.length - 1];
-  console.log(recentPrice);
   return (
     <Row
       className="border border-secondary rounded p-2 text-center"
-      onClick={() => {
-        // console.log("this is a list item");
-      }}>
+      onClick={() => {}}>
       <Col xs={10}>
         <h5>{name}</h5>
         {}

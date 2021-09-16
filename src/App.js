@@ -7,9 +7,9 @@ import "./styles/bootstrap5.min.css";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  setNormalisedData,
   setProductsData,
   setState,
+  addNewItem,
   deleteItem,
   saveItem,
   setPrices,
@@ -18,8 +18,7 @@ import {
 
 // Components
 import ListItem from "./components/ListItem";
-import Add from "./components/Add";
-import { Row, Col, Form } from "react-bootstrap";
+import { Row, Col, Form, Button } from "react-bootstrap";
 function App() {
   const products = useSelector((state) => state.products.products);
   const dispatch = useDispatch();
@@ -54,6 +53,7 @@ function App() {
         .catch(function (error) {
           // handle error
           setError(true);
+          alert("no internet connection, no previously stored data");
         });
     }
   }, []);
@@ -87,6 +87,7 @@ function App() {
             <Form.Group>
               <Form.Label>Enter drugs</Form.Label>
               <Form.Control
+                required
                 name="name"
                 onChange={(e) => setName(e.target.value)}
                 value={name}></Form.Control>
@@ -98,16 +99,20 @@ function App() {
                 onChange={(e) => setPrice(e.target.value)}></Form.Control>
             </Form.Group>
           </Form>
-          <Add
-          // onClick={dispatch(
-          //   saveItem({
-          //     id: products.length + 1,
-          //     name: name,
-          //     price: price,
-          //     date: new Date()
-          //   })
-          // )}
-          ></Add>
+          <Button
+            className="btn btn-block mt-3"
+            type="submit"
+            onClick={() =>
+              dispatch(
+                addNewItem({
+                  id: products.length + 1,
+                  name: name,
+                  prices: price,
+                })
+              )
+            }>
+            Add New Item
+          </Button>
         </Col>
       </Row>
     </div>
