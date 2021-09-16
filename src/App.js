@@ -19,6 +19,7 @@ import {
 // Components
 import ListItem from "./components/ListItem";
 import { Row, Col, Form, Button } from "react-bootstrap";
+
 function App() {
   const products = useSelector((state) => state.products.products);
   const dispatch = useDispatch();
@@ -93,6 +94,7 @@ function App() {
                 value={name}></Form.Control>
               <Form.Label>Enter price</Form.Label>
               <Form.Control
+                required
                 type="number"
                 name="price"
                 value={price}
