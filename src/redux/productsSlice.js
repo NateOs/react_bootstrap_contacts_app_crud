@@ -43,7 +43,35 @@ export const productsSlice = createSlice({
     setPrices: (state, action) => {
       state.prices = action.payload;
     },
-    setProducts: (state, action) => {},
+    getItemInfo: (state, action) => {
+      console.log(action.payload);
+      // let id = action.payload;
+      // const itemToUpdate = state.products.map((item) => item.id === id);
+      // console.log('itemToUpdate');
+    },
+    updatePrice: (state, action) => {
+      console.log("newprice", action.payload);
+      let id = action.payload.id;
+      let newPrice = {
+        id: state.products.length + 1,
+        price: action.payload.newPrice,
+        date: new Date().toISOString(),
+      };
+
+      //       date: "2018-11-01T17:16:32+00:00"
+      // id: 2
+      // price: 9.2
+
+      const itemToUpdate = state.products.find((product) => product.id === id);
+      console.log(JSON.stringify(itemToUpdate, undefined, 2));
+
+      const indexOfItem = state.products.indexOf(itemToUpdate);
+      itemToUpdate.prices.push(newPrice);
+
+      state.products.splice(indexOfItem, 1, itemToUpdate);
+      // after splice to state and save to local
+      localStorage.setItem("productsState", JSON.stringify(state.products));
+    },
   },
 });
 
@@ -56,5 +84,7 @@ export const {
   setPrices,
   setProducts,
   saveItem,
+  getItemInfo,
+  updatePrice,
 } = productsSlice.actions;
 export default productsSlice.reducer;

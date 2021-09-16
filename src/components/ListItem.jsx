@@ -12,6 +12,7 @@ export default function ListItem({ name, id, prices }) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
+  const logSomething = () => setShow(false);
   const handleShow = () => setShow(true);
   return (
     <>
@@ -33,7 +34,12 @@ export default function ListItem({ name, id, prices }) {
             Delete
           </Button>
         </Col>
-        <UpdateForm show={show} handleClose={handleClose} />
+        <UpdateForm
+          show={show}
+          handleClose={handleClose}
+          logSomething={logSomething}
+          id={id}
+        />
       </Row>
     </>
   );

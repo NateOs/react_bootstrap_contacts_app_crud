@@ -10,6 +10,7 @@ import {
   setProductsData,
   setState,
   addNewItem,
+  getItemInfo,
   deleteItem,
   saveItem,
   setPrices,
@@ -78,6 +79,7 @@ function App() {
                   key={id}
                   name={name}
                   prices={prices}
+                  onclick={() => dispatch(getItemInfo(id))}
                   id={id}></ListItem>
               );
             })
