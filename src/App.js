@@ -1,21 +1,11 @@
 // packages
 import "./App.css";
-import axios from "axios";
 import "./styles/bootstrap5.min.css";
 
 // other imports
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  setProductsData,
-  setState,
-  addNewItem,
-  getItemInfo,
-  deleteItem,
-  saveItem,
-  setPrices,
-  setProducts,
-} from "./redux/productsSlice";
+import { setState, addNewItem, getItemInfo } from "./redux/productsSlice";
 
 // Components
 import ListItem from "./components/ListItem";
@@ -42,22 +32,6 @@ function App() {
       setIsLoading(false);
       dispatch(setState(dataInStorage));
     }
-
-    if (dataInStorage.length < 1) {
-      axios
-        .get(url)
-        .then(function (response) {
-          // handle success
-          dispatch(setProductsData(response.data));
-          setIsLoading(false);
-          setError(false);
-        })
-        .catch(function (error) {
-          // handle error
-          setError(true);
-          alert("no internet connection, no previously stored data");
-        });
-    }
   }, []);
 
   return (
@@ -82,8 +56,6 @@ function App() {
               );
             })
           ) : (
-            // [ ] react hook form validation
-            // [ ] Fetch initial contacts from mockaroo
             <p>Error encountered, check internet</p>
           )}
           <Form>

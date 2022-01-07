@@ -14,6 +14,7 @@ export default function ListItem({ name, id, prices }) {
   const handleClose = () => {
     setShow(false);
   };
+  
   const handleShow = () => setShow(true);
   return (
     <>
