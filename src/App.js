@@ -64,9 +64,7 @@ function App() {
     <div>
       <Row>
         <Col>
-          <h1 className="text-center mt-5 border rounded p-1">
-            Item Price Manager
-          </h1>
+          <h1 className="text-center mt-5 border rounded p-1">Contacts App</h1>
         </Col>
       </Row>
       <Row>
@@ -84,20 +82,22 @@ function App() {
               );
             })
           ) : (
+            // [ ] react hook form validation
+            // [ ] Fetch initial contacts from mockaroo
             <p>Error encountered, check internet</p>
           )}
           <Form>
             <Form.Group>
-              <Form.Label>Enter drugs</Form.Label>
+              <Form.Label>Enter Name</Form.Label>
               <Form.Control
                 required
                 name="name"
                 onChange={(e) => setName(e.target.value)}
                 value={name}></Form.Control>
-              <Form.Label>Enter price</Form.Label>
+              <Form.Label>Enter Phone number</Form.Label>
               <Form.Control
                 required
-                type="number"
+                type="tel"
                 name="price"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}></Form.Control>
@@ -112,7 +112,7 @@ function App() {
                   id: products.length + 1,
                   name: name,
                   prices: price,
-                })
+                }),
               )
             }>
             Add New Item

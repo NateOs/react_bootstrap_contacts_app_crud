@@ -11,13 +11,14 @@ export default function ListItem({ name, id, prices }) {
 
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const logSomething = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
   return (
     <>
       <Row
-        className="border border-secondary rounded p-2 text-center onHover"
+        className="border border-secondary rounded p-2 text-left onHover"
         onClick={handleShow}>
         <Col xs={10}>
           <h5>{name}</h5>
@@ -34,12 +35,7 @@ export default function ListItem({ name, id, prices }) {
             Delete
           </Button>
         </Col>
-        <UpdateForm
-          show={show}
-          handleClose={handleClose}
-          logSomething={logSomething}
-          id={id}
-        />
+        <UpdateForm show={show} handleClose={handleClose} id={id} />
       </Row>
     </>
   );
